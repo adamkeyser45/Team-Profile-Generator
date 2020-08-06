@@ -1,0 +1,28 @@
+{
+  "name": "mod10challenge",
+  "version": "1.0.0",
+  "description": "A Node.js command-line application that generates an HTML webpage that displays summaries for employees.",
+  "main": "Index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "inquirer": "^7.3.3"
+  },
+  "devDependencies": {
+    "jest": "^26.2.2"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adamkeyser45/mod10challenge.git"
+  },
+  "author": "Adam Keyser",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adamkeyser45/mod10challenge/issues"
+  },
+  "homepage": "https://github.com/adamkeyser45/mod10challenge#readme"
+}
