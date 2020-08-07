@@ -60,14 +60,14 @@ const promptUserManager = () => {
     ])
 };
 
-const promptTeamMemeber = managerData => {
+const promptTeamMemeber = teamData => {
     console.log(`
     ===== Add a Team Member =====
     `);
 
     // If there's no team members array property, create one
-    if (!managerData.team) {
-        managerData.team = [];
+    if (!teamData.team) {
+        teamData.team = [];
     }
 
     return inquirer.prompt([
@@ -79,7 +79,7 @@ const promptTeamMemeber = managerData => {
         }
     ])
     .then(addMember => {
-        managerData.team.push(addMember);
+        teamData.team.push(addMember);
         if (addMember.teamMemberChoice === 'Intern') {
             console.log(`
             ===== INTERN CHOSEN =====
@@ -145,11 +145,11 @@ const promptTeamMemeber = managerData => {
                 }
             ])
             .then(addMember => {
-                managerData.team.push(addMember);
+                teamData.team.push(addMember);
                 if (addMember.confirmAddMember) {
-                    return promptTeamMemeber(managerData);
+                    return promptTeamMemeber(teamData);
                 } else {
-                    return managerData;
+                    return teamData;
                 }
             });
         }
@@ -157,13 +157,81 @@ const promptTeamMemeber = managerData => {
             console.log(`
             ===== ENGINEER CHOSEN =====
             `);
+            return inquirer.prompt([
+                {
+                    type: 'input',
+                    name: 'engineerName',
+                    message: "What is the engineer's name?",
+                    validate: engineerName => {
+                        if (engineerName) {
+                            return true;
+                        } else {
+                            console.log("Please enter the engineer's name!");
+                            return false;
+                        }
+                    }
+                },
+                {
+                    type: 'input',
+                    name: 'engineerId',
+                    message: "What is the engineer's ID#?",
+                    validate: engineerId => {
+                        if (engineerId > 0) {
+                            return true;
+                        } else {
+                            console.log("Please enter a number that is greater than 0!");
+                            return false;
+                        }
+                    }
+                },
+                {
+                    type: 'input',
+                    name: 'engineerEmail',
+                    message: "What is the engineer's email address?",
+                    validate: engineerEmail => {
+                        if (engineerEmail) {
+                            return true;
+                        } else {
+                            console.log("Please enter the engineer's email!");
+                            return false;
+                        }
+                    }
+                },
+                {
+                    type: 'input',
+                    name: 'engineerGithub',
+                    message: "What is the engineer's GitHub profile name?",
+                    validate: engineerGithub => {
+                        if (engineerGithub) {
+                            return true;
+                        } else {
+                            console.log("Please enter the engineer's GitHUb profile name!");
+                            return false;
+                        }
+                    }
+                },
+                {
+                    type: 'confirm',
+                    name: 'confirmAddMember',
+                    message: 'Would you like to enter another team member?',
+                    default: false
+                }
+            ])
+            .then(addMember => {
+                teamData.team.push(addMember);
+                if (addMember.confirmAddMember) {
+                    return promptTeamMemeber(teamData);
+                } else {
+                    return teamData;
+                }
+            });
         }
     });
 };
 
 promptUserManager()
     .then(promptTeamMemeber)
-    // .then(teamData => {
-    //     console.log(teamData);
-    // });
+    .then(teamData => {
+        console.log(teamData);
+    });
 
