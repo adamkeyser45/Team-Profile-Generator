@@ -3,7 +3,13 @@ const generatePage = require('./utils/generatePage.js');
 const { writeFile, copyFile } = require('./utils/generatePage.js');
 
 const promptUserManager = () => {
-    console.log("Welcocme to the Dev Team Page Builder! Follow the prompts below to build your team.");
+    console.log(`
+============================================
+  Welcocme to the Dev Team Page Builder!
+Follow the prompts below to build your team.
+============================================
+
+`);
     return inquirer.prompt([
         {
             type: 'input',
@@ -62,7 +68,7 @@ const promptUserManager = () => {
 
 const promptTeamMemeber = teamData => {
     console.log(`
-    ===== Add a Team Member =====
+===== Add a Team Member =====
     `);
 
     // If there's no team members array property, create one
@@ -82,7 +88,7 @@ const promptTeamMemeber = teamData => {
         teamData.team.push(addMember);
         if (addMember.teamMemberChoice === 'Intern') {
             console.log(`
-            ===== INTERN CHOSEN =====
+===== INTERN CHOSEN =====
             `);
             return inquirer.prompt([
                 {
@@ -155,7 +161,7 @@ const promptTeamMemeber = teamData => {
         }
         else if (addMember.teamMemberChoice === 'Engineer') {
             console.log(`
-            ===== ENGINEER CHOSEN =====
+===== ENGINEER CHOSEN =====
             `);
             return inquirer.prompt([
                 {
