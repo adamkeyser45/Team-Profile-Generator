@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const generatePage = require('./utils/generatePage.js');
-const { writeFile, copyFile } = require('./utils/generatePage.js');
+const writeFile = require('./utils/generatePage.js');
 
 const promptUserManager = () => {
     console.log(`
