@@ -1,6 +1,11 @@
 const inquirer = require('inquirer');
-const generatePage = require('./utils/generatePage.js');
+const generatePage = require('./src/page-template.js');
 const writeFile = require('./utils/generatePage.js');
+const Manager = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
+
+let teamData = [];
 
 const promptUserManager = () => {
     console.log(`
@@ -63,18 +68,13 @@ Follow the prompts below to build your team.
                 }
             }
         }
-    ])
+    ]);
 };
 
-const promptTeamMemeber = teamData => {
+const promptTeamMember = () => {
     console.log(`
 ===== Add a Team Member =====
     `);
-
-    // If there's no team members array property, create one
-    if (!teamData.team) {
-        teamData.team = [];
-    }
 
     return inquirer.prompt([
         {
@@ -85,7 +85,6 @@ const promptTeamMemeber = teamData => {
         }
     ])
     .then(addMember => {
-        teamData.team.push(addMember);
         if (addMember.teamMemberChoice === 'Intern') {
             console.log(`
 ===== INTERN CHOSEN =====
@@ -150,12 +149,18 @@ const promptTeamMemeber = teamData => {
                     default: false
                 }
             ])
-            .then(addMember => {
-                teamData.team.push(addMember);
-                if (addMember.confirmAddMember) {
-                    return promptTeamMemeber(teamData);
+            .then(answers => {
+                const intern = new Intern(
+                    answers.internName,
+                    answers.internId,
+                    answers.internEmail,
+                    answers.internSchool);
+                teamData.push(intern);
+                if (answers.confirmAddMember) {
+                    return promptTeamMember();
                 } else {
-                    return teamData;
+                    console.log(teamData);
+                    return;
                 }
             });
         }
@@ -211,7 +216,7 @@ const promptTeamMemeber = teamData => {
                         if (engineerGithub) {
                             return true;
                         } else {
-                            console.log("Please enter the engineer's GitHUb profile name!");
+                            console.log("Please enter the engineer's GitHub profile name!");
                             return false;
                         }
                     }
@@ -223,12 +228,18 @@ const promptTeamMemeber = teamData => {
                     default: false
                 }
             ])
-            .then(addMember => {
-                teamData.team.push(addMember);
-                if (addMember.confirmAddMember) {
-                    return promptTeamMemeber(teamData);
+            .then(answers => {
+                const engineer = new Engineer(
+                    answers.engineerName,
+                    answers.engineerId,
+                    answers.engineerEmail,
+                    answers.engineerGithub);
+                teamData.push(engineer);
+                if (answers.confirmAddMember) {
+                    return promptTeamMember();
                 } else {
-                    return teamData;
+                    console.log(teamData);
+                    return;
                 }
             });
         }
@@ -236,8 +247,16 @@ const promptTeamMemeber = teamData => {
 };
 
 promptUserManager()
-    .then(promptTeamMemeber)
-    .then(teamData => {
-        console.log(teamData);
-    });
+    .then()
+    .then(answers => {
+        const manager = new Manager(
+            answers.managerName, 
+            answers.managerId, 
+            answers.managerEmail, 
+            answers.managerOffice);
+        teamData.push(manager);
+        promptTeamMember();
+    })
+    .then(generatePage(teamData));
 
+    
