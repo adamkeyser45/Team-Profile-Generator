@@ -5,8 +5,10 @@ const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 
+// array that will hold all of the created employees
 let teamData = [];
 
+//function that starts the program
 const init = () => {
     console.log(`
 ============================================
@@ -18,6 +20,7 @@ Follow the prompts below to build your team.
     return inquirer.prompt(promptUserManager)
 };
 
+// inquirer questions concerning the manager
 const promptUserManager = [
     {
         type: 'input',
@@ -73,6 +76,7 @@ const promptUserManager = [
     }
 ];
 
+// function that asks the inqurier questions about the interns and engineers
 const promptTeamMember = () => {
     console.log(`
 ===== Add a Team Member =====
@@ -87,6 +91,7 @@ const promptTeamMember = () => {
         }
     ])
     .then(addMember => {
+        // if the INTERN choice is picked
         if (addMember.teamMemberChoice === 'Intern') {
             console.log(`
 ===== INTERN CHOSEN =====
@@ -152,6 +157,7 @@ const promptTeamMember = () => {
                 }
             ])
             .then(answers => {
+                // creates a new Intern and pushes it to the teamData array
                 const intern = new Intern(
                     answers.internName,
                     answers.internId,
@@ -165,6 +171,7 @@ const promptTeamMember = () => {
                 }
             });
         }
+        // if the ENGINEER choice is picked
         else if (addMember.teamMemberChoice === 'Engineer') {
             console.log(`
 ===== ENGINEER CHOSEN =====
@@ -230,6 +237,7 @@ const promptTeamMember = () => {
                 }
             ])
             .then(answers => {
+                // a new Engineer is created and sent to the teamData Array
                 const engineer = new Engineer(
                     answers.engineerName,
                     answers.engineerId,
@@ -246,7 +254,7 @@ const promptTeamMember = () => {
     });
 };
 
-// function to write README file
+// function to write the index.html file in the dist/ folder
 const writeFile = data => {
     fs.writeFile('./dist/index.html', data, err => {
         if (err) throw err;
@@ -254,8 +262,10 @@ const writeFile = data => {
     });
 };
 
+// function calls and promise chain for the program
 init()
     .then(answers => {
+        // creates a new manager and sends it to the teamData array
         const manager = new Manager(
             answers.managerName, 
             answers.managerId, 

@@ -1,3 +1,4 @@
+// this function is called to genereate each individual card for the employees. Uses the getRole() method to help filter the array
 const generateCards = teamDataArr => {
     console.log(teamDataArr);
     return `
@@ -57,6 +58,7 @@ const generateCards = teamDataArr => {
     `;    
 };
 
+// where the base of the html page is created
 module.exports = templateData => {
 
     return `
