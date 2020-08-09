@@ -245,7 +245,6 @@ const promptTeamMember = () => {
 };
 
 promptUserManager()
-    .then()
     .then(answers => {
         const manager = new Manager(
             answers.managerName, 
@@ -259,9 +258,11 @@ promptUserManager()
         completeArr = teamData;
         return pageTemplate(completeArr);
     })
-    // .then(arr => {
-    //     console.log(arr);
-    // })
-    ;
+    .then(writeHtml => {
+        return writeFile(writeHtml);
+    })
+    .catch(err => {
+        console.log(err);
+    });
 
     

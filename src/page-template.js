@@ -58,8 +58,6 @@ const generateCards = teamDataArr => {
 
 module.exports = templateData => {
 
-    console.log(templateData);
-
     return `
     <!DOCTYPE html>
     <html lang="en">
