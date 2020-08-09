@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const generatePage = require('./src/page-template.js');
+const pageTemplate = require('./src/page-template.js');
 const writeFile = require('./utils/generatePage.js');
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
@@ -159,7 +159,6 @@ const promptTeamMember = () => {
                 if (answers.confirmAddMember) {
                     return promptTeamMember();
                 } else {
-                    console.log(teamData);
                     return;
                 }
             });
@@ -238,7 +237,6 @@ const promptTeamMember = () => {
                 if (answers.confirmAddMember) {
                     return promptTeamMember();
                 } else {
-                    console.log(teamData);
                     return;
                 }
             });
@@ -257,6 +255,13 @@ promptUserManager()
         teamData.push(manager);
         promptTeamMember();
     })
-    .then(generatePage(teamData));
+    .then( completeArr => {
+        completeArr = teamData;
+        return pageTemplate(completeArr);
+    })
+    // .then(arr => {
+    //     console.log(arr);
+    // })
+    ;
 
     

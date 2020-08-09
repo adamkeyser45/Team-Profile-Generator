@@ -1,7 +1,64 @@
+const generateCards = teamDataArr => {
+    return `
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="card-deck"> 
+                    ${teamDataArr.filter(({ manager }) => manager).map(({ name, id, email, office }) => {
+                        return `
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-header text-center">
+                                    <h2 class="card-subtitle mb-2">${name}</h3>
+                                    <h4 class="card-subtitle mb-2"><i class="glyphicon glyphicon-king" aria-hidden="true"></i> Team Manager</h5>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">ID: ${id} </li>
+                                <li class="list-group-item">Email: <a href="mailto:${email}" target="_top">${email}</a></li>
+                                <li class="list-group-item">Office Number: ${office}</li>
+                            </ul>
+                            </div>
+                        `;
+                    }).join('')}
+
+                    ${teamDataArr.filter(({ engineer }) => engineer).map(({ name, id, email, github }) => {
+                        return `
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-header text-center">
+                                    <h2 class="card-subtitle mb-2">${name}</h3>
+                                    <h4 class="card-subtitle mb-2"><i class="glyphicon glyphicon-wrench" aria-hidden="true"></i> Engineer</h5>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">ID: ${id} </li>
+                                <li class="list-group-item">Email: <a href="mailto:${email}" target="_top">${email}</a></li>
+                                <li class="list-group-item">GitHub: ${github}</li>
+                            </ul>
+                            </div>
+                        `;
+                    }).join('')}
+
+                    ${teamDataArr.filter(({ intern }) => intern).map(({ name, id, email, school }) => {
+                        return `
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-header text-center">
+                                    <h2 class="card-subtitle mb-2">${name}</h3>
+                                    <h4 class="card-subtitle mb-2"><i class="glyphicon glyphicon-education" aria-hidden="true"></i> Intern</h5>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">ID: ${id} </li>
+                                <li class="list-group-item">Email: <a href="mailto:${email}" target="_top">${email}</a></li>
+                                <li class="list-group-item">School: ${school}</li>
+                            </ul>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        </div>
+    `;    
+};
+
 module.exports = templateData => {
 
-    // destructure projects and about data from templateData based on their property key names
-    // const { projects, about, ...header } = templateData;
+    console.log(templateData);
 
     return `
     <!DOCTYPE html>
@@ -21,49 +78,9 @@ module.exports = templateData => {
               <h1 class="display-4">My Dev Team</h1>
               <p class="lead">Checkout who is on our team!</p>
             </div>
-          </div>
-    
-        <div class="container">
-            <div class="row justify-content-center">
-            
-                <div class="card-deck"> 
-                    <div class="card" style="width: 18rem;">
-                        <div class="card-header text-center">
-                            <h2 class="card-subtitle mb-2">Adam</h3>
-                            <h4 class="card-subtitle mb-2"><i class="glyphicon glyphicon-king" aria-hidden="true"></i> Team Manager</h5>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">ID: 1</li>
-                            <li class="list-group-item">Email: <a href="mailto:email@gmail.com" target="_top">email@email.com</a></li>
-                            <li class="list-group-item">Office Number: 1</li>
-                        </ul>
-                    </div>
-                    <div class="card" style="width: 18rem;">
-                        <div class="card-header text-center">
-                            <h2 class="card-subtitle mb-2">Bill</h3>
-                            <h4 class="card-subtitle mb-2"><i class="glyphicon glyphicon-wrench" aria-hidden="true"></i> Engineer</h5>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">ID: 2</li>
-                            <li class="list-group-item">Email: <a href="mailto:email@gmail.com" target="_top">email@email.com</a></li>
-                            <li class="list-group-item">Office Number: 2</li>
-                        </ul>
-                    </div>
-                    <div class="card" style="width: 18rem;">
-                        <div class="card-header text-center">
-                            <h2 class="card-subtitle mb-2">Ted</h3>
-                            <h4 class="card-subtitle mb-2"><i class="glyphicon glyphicon-education" aria-hidden="true"></i> Intern</h5>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">ID: 3</li>
-                            <li class="list-group-item">Email: <a href="mailto:email@gmail.com" target="_top">email@email.com</a></li>
-                            <li class="list-group-item">Office Number: 3</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
         </div>
-        
+            ${generateCards(templateData)}
+
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
