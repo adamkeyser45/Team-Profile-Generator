@@ -1,13 +1,13 @@
+const fs = require('fs');
 const inquirer = require('inquirer');
 const pageTemplate = require('./src/page-template.js');
-const writeFile = require('./utils/generatePage.js');
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 
 let teamData = [];
 
-const promptUserManager = () => {
+const init = () => {
     console.log(`
 ============================================
   Welcocme to the Dev Team Page Builder!
@@ -15,61 +15,63 @@ Follow the prompts below to build your team.
 ============================================
 
 `);
-    return inquirer.prompt([
-        {
-            type: 'input',
-            name: 'managerName',
-            message: "What is the team manager's name?",
-            validate: managerName => {
-                if (managerName) {
-                    return true;
-                } else {
-                    console.log("Please enter the team manager's name!");
-                    return false;
-                }
-            }
-        },
-        {
-            type: 'input',
-            name: 'managerId',
-            message: "What is the team manager's ID#?",
-            validate: managerId => {
-                if (managerId > 0) {
-                    return true;
-                } else {
-                    console.log("Please enter a number that is greater than 0!");
-                    return false;
-                }
-            }
-        },
-        {
-            type: 'input',
-            name: 'managerEmail',
-            message: "What is the team manager's email address?",
-            validate: managerEmail => {
-                if (managerEmail) {
-                    return true;
-                } else {
-                    console.log("Please enter the team manager's email!");
-                    return false;
-                }
-            }
-        },
-        {
-            type: 'input',
-            name: 'managerOffice',
-            message: "What is the team manager's office number?",
-            validate: managerOffice => {
-                if (managerOffice > 0) {
-                    return true;
-                } else {
-                    console.log("Please enter a number that is greater than 0!");
-                    return false;
-                }
+    return inquirer.prompt(promptUserManager)
+};
+
+const promptUserManager = [
+    {
+        type: 'input',
+        name: 'managerName',
+        message: "What is the team manager's name?",
+        validate: managerName => {
+            if (managerName) {
+                return true;
+            } else {
+                console.log("Please enter the team manager's name!");
+                return false;
             }
         }
-    ]);
-};
+    },
+    {
+        type: 'input',
+        name: 'managerId',
+        message: "What is the team manager's ID#?",
+        validate: managerId => {
+            if (managerId > 0) {
+                return true;
+            } else {
+                console.log("Please enter a number that is greater than 0!");
+                return false;
+            }
+        }
+    },
+    {
+        type: 'input',
+        name: 'managerEmail',
+        message: "What is the team manager's email address?",
+        validate: managerEmail => {
+            if (managerEmail) {
+                return true;
+            } else {
+                console.log("Please enter the team manager's email!");
+                return false;
+            }
+        }
+    },
+    {
+        type: 'input',
+        name: 'managerOffice',
+        message: "What is the team manager's office number?",
+        validate: managerOffice => {
+            if (managerOffice > 0) {
+                return true;
+            } else {
+                console.log("Please enter a number that is greater than 0!");
+                return false;
+            }
+        }
+    }
+];
 
 const promptTeamMember = () => {
     console.log(`
@@ -244,7 +246,15 @@ const promptTeamMember = () => {
     });
 };
 
-promptUserManager()
+// function to write README file
+const writeFile = data => {
+    fs.writeFile('./dist/index.html', data, err => {
+        if (err) throw err;
+        console.log('Your Dev Team Page has been created! Be sure to check it out in the dist folder!');
+    });
+};
+
+init()
     .then(answers => {
         const manager = new Manager(
             answers.managerName, 
@@ -252,14 +262,14 @@ promptUserManager()
             answers.managerEmail, 
             answers.managerOffice);
         teamData.push(manager);
-        promptTeamMember();
     })
-    .then( completeArr => {
+    .then(promptTeamMember)
+    .then(completeArr => {
         completeArr = teamData;
         return pageTemplate(completeArr);
     })
-    .then(writeHtml => {
-        return writeFile(writeHtml);
+    .then(completeTemplate => {
+        return writeFile(completeTemplate);
     })
     .catch(err => {
         console.log(err);
